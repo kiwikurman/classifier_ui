@@ -24,53 +24,53 @@ const statusMap = {
   refunded: 'error'
 };
 
-export const OverviewLatestOrders = (props) => {
-  const { orders = [], sx } = props;
+export const TransactionTable = (props) => {
+  const { transactions = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title="Transactions" />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Order
-                </TableCell>
-                <TableCell>
-                  Customer
-                </TableCell>
-                <TableCell sortDirection="desc">
                   Date
                 </TableCell>
                 <TableCell>
-                  Status
+                  Merchant
+                </TableCell>
+                <TableCell sortDirection="desc">
+                  Amount
+                </TableCell>
+                <TableCell>
+                  Classification
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => {
-                const createdAt = format(order.createdAt, 'dd/MM/yyyy');
-
-                return (
+              {transactions.map((transaction) => {
+                const createdAt = format(transaction.createdAt, 'dd/MM/yyyy');
+                 return (
                   <TableRow
                     hover
-                    key={order.id}
+                    key={transaction.id}
                   >
-                    <TableCell>
-                      {order.ref}
-                    </TableCell>
-                    <TableCell>
-                      {order.customer.name}
-                    </TableCell>
                     <TableCell>
                       {createdAt}
                     </TableCell>
                     <TableCell>
-                      <SeverityPill color={statusMap[order.status]}>
-                        {order.status}
-                      </SeverityPill>
+                      {transaction.merchant}
+                    </TableCell>
+                    <TableCell>
+                      {transaction.amount}
+                    </TableCell>
+                    <TableCell>
+                      {transaction.classification}
+                      {/*<SeverityPill color={statusMap[transaction.status]}>
+                        {transaction.status}
+                      </SeverityPill>*/}
                     </TableCell>
                   </TableRow>
                 );
@@ -98,7 +98,7 @@ export const OverviewLatestOrders = (props) => {
   );
 };
 
-OverviewLatestOrders.prototype = {
-  orders: PropTypes.array,
+TransactionTable.prototype = {
+  transactions: PropTypes.array,
   sx: PropTypes.object
 };
