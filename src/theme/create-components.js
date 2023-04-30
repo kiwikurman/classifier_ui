@@ -89,6 +89,10 @@ export function createComponents(config) {
         '*': {
           boxSizing: 'border-box'
         },
+        listitem: {
+          hight: 10,
+          padding: 0
+        },
         html: {
           MozOsxFontSmoothing: 'grayscale',
           WebkitFontSmoothing: 'antialiased',

@@ -91,7 +91,7 @@ export const TransactionTable = (props) => {
           size="small"
           variant="text"
         >
-          View all
+          Manage Source Files
         </Button>
       </CardActions>
     </Card>

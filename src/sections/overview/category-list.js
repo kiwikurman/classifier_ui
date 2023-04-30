@@ -17,29 +17,29 @@ import {
   SvgIcon
 } from '@mui/material';
 
-export const OverviewLatestProducts = (props) => {
-  const { products = [], sx } = props;
+export const Categories = (props) => {
+  const { categories = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Products" />
+      <CardHeader title="My Categories" />
       <List>
-        {products.map((product, index) => {
-          const hasDivider = index < products.length - 1;
-          const ago = formatDistanceToNow(product.updatedAt);
+        {categories.map((category, index) => {
+          const hasDivider = index < categories.length - 1;
+          const ago = formatDistanceToNow(category.updatedAt);
 
           return (
             <ListItem
               divider={hasDivider}
-              key={product.id}
+              key={category.id}
             >
-              <ListItemAvatar>
+              {/*<ListItemAvatar>
                 {
-                  product.image
+                  category.image
                     ? (
                       <Box
                         component="img"
-                        src={product.image}
+                        src={category.image}
                         sx={{
                           borderRadius: 1,
                           height: 48,
@@ -58,12 +58,10 @@ export const OverviewLatestProducts = (props) => {
                       />
                     )
                 }
-              </ListItemAvatar>
+              </ListItemAvatar>*/}
               <ListItemText
-                primary={product.name}
+                primary={category.name}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
-                secondary={`Updated ${ago} ago`}
-                secondaryTypographyProps={{ variant: 'body2' }}
               />
               <IconButton edge="end">
                 <SvgIcon>
@@ -86,14 +84,14 @@ export const OverviewLatestProducts = (props) => {
           size="small"
           variant="text"
         >
-          View all
+          Manage Categories
         </Button>
       </CardActions>
     </Card>
   );
 };
 
-OverviewLatestProducts.propTypes = {
-  products: PropTypes.array,
+Categories.propTypes = {
+  categories: PropTypes.array,
   sx: PropTypes.object
 };

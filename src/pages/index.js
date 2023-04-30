@@ -3,8 +3,8 @@ import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { OverviewBudget } from 'src/sections/overview/overview-budget';
-import { TransactionTable } from 'src/sections/overview/overview-latest-orders';
-import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-products';
+import { TransactionTable } from 'src/sections/overview/transaction-table';
+import { Categories } from 'src/sections/overview/category-list';
 import { OverviewSales } from 'src/sections/overview/overview-sales';
 import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
 import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
@@ -83,36 +83,62 @@ const Page = () => (
             md={6}
             lg={4}
           >
-            <OverviewLatestProducts
-              products={[
+            <Categories
+              categories={[
                 {
                   id: '5ece2c077e39da27658aa8a9',
-                  image: '/assets/products/product-1.png',
-                  name: 'Healthcare Erbology',
+                  name: 'Restaurants',
                   updatedAt: subHours(now, 6).getTime()
                 },
                 {
                   id: '5ece2c0d16f70bff2cf86cd8',
-                  image: '/assets/products/product-2.png',
-                  name: 'Makeup Lancome Rouge',
+                  name: 'Coffee',
                   updatedAt: subDays(subHours(now, 8), 2).getTime()
                 },
                 {
                   id: 'b393ce1b09c1254c3a92c827',
-                  image: '/assets/products/product-5.png',
-                  name: 'Skincare Soja CO',
+                  name: 'Groceries',
                   updatedAt: subDays(subHours(now, 1), 1).getTime()
                 },
                 {
                   id: 'a6ede15670da63f49f752c89',
-                  image: '/assets/products/product-6.png',
-                  name: 'Makeup Lipstick',
+                  name: 'Gas',
                   updatedAt: subDays(subHours(now, 3), 3).getTime()
                 },
                 {
                   id: 'bcad5524fe3a2f8f8620ceda',
                   image: '/assets/products/product-7.png',
-                  name: 'Healthcare Ritual',
+                  name: 'hoog',
+                  updatedAt: subDays(subHours(now, 5), 6).getTime()
+                },
+                {
+                  id: '3d4633a613d04b7389e365b905bf2f2f',
+                  image: '/assets/products/product-7.png',
+                  name: 'Gifts',
+                  updatedAt: subDays(subHours(now, 5), 6).getTime()
+                },
+                {
+                  id: '00d2e9ed172c49b8a6aa6bf44b6d101b',
+                  image: '/assets/products/product-7.png',
+                  name: 'Clothing',
+                  updatedAt: subDays(subHours(now, 5), 6).getTime()
+                },
+                {
+                  id: 'db6f4f8282d2472793b88d03e0ca12a1',
+                  image: '/assets/products/product-7.png',
+                  name: 'Home Improvement',
+                  updatedAt: subDays(subHours(now, 5), 6).getTime()
+                },
+                {
+                  id: 'fe5c166e5d5a4a5d8646ac16c7b0785f',
+                  image: '/assets/products/product-7.png',
+                  name: 'Alternative Transport',
+                  updatedAt: subDays(subHours(now, 5), 6).getTime()
+                },
+                {
+                  id: '9644c4aa3f3a4c539a1ad4b27e0d5a1f',
+                  image: '/assets/products/product-7.png',
+                  name: 'TV, internet and cellphone bills',
                   updatedAt: subDays(subHours(now, 5), 6).getTime()
                 }
               ]}
