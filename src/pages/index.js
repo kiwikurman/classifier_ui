@@ -24,7 +24,7 @@ const Page = () => (
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8
+        py: 1
       }}
     >
       <Container maxWidth="xl">
@@ -71,6 +71,116 @@ const Page = () => (
                 },
                 {
                   id: '1f4e1bd0a87cea23cdb83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a87cea23cdb83d15',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a873ea23cdb53d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd2a87c6a23cdb83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a873ea23cdb83718',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0787cea23c5b83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a87cea237db83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a87cea23c8b83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a87cea23c9b83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a87cea23cdb93d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '1f4e1bd0a87cea43cdb83d18',
+                  ref: 'DEV1046',
+                  amount: 96.43,
+                  customer: {
+                    name: 'Anje Keizer'
+                  },
+                  createdAt: 1554757200000,
+                  status: 'pending'
+                },
+                {
+                  id: '154e1bd0a87cea23cdb83d18',
                   ref: 'DEV1046',
                   amount: 96.43,
                   customer: {

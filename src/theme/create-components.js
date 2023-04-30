@@ -80,7 +80,7 @@ export function createComponents(config) {
       },
       styleOverrides: {
         root: {
-          padding: '32px 24px 16px'
+          padding: '16px 24px 16px'
         }
       }
     },
