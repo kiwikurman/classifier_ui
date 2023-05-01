@@ -10,14 +10,41 @@ import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-prog
 import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
 import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
+import { useState, useEffect } from 'react';
+
 
 const now = new Date();
 
-const Page = () => (
+
+const Page = () =>
+{
+const [data, setData] = useState([
+                  {
+                    id: 'ddc0a50f0c764e02a8d9a05a59ca1611',
+                    amount: 30.5,
+                    merchant: 'ארומה',
+                    createdAt: 1555016400000,
+                    full_text_classification: 'Coffee'
+                  },
+                  {
+                    id: '22f4566ab8d24685a5466b1a3ec1fda7',
+                    amount: 30.5,
+                    merchant: 'לנדוור',
+                    createdAt: 1555016400000,
+                    full_text_classification: 'Coffee'
+                  }
+                ]);
+useEffect(() => {
+    fetch('https://v13wwxozn7.execute-api.eu-central-1.amazonaws.com/default/getTransactionList')
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error(error));
+  }, []);
+return (
   <>
     <Head>
       <title>
-        Overview | Devias Kit
+        SmartClassifier
       </title>
     </Head>
     <Box
@@ -38,43 +65,7 @@ const Page = () => (
             lg={8}
           >
             <TransactionTable
-              transactions={[
-                {
-                  id: 'ddc0a50f0c764e02a8d9a05a59ca1611',
-                  amount: 30.5,
-                  merchant: 'ארומה',
-                  createdAt: 1555016400000,
-                  classification: 'Coffee'
-                },
-                {
-                  id: '22f4566ab8d24685a5466b1a3ec1fda7',
-                  amount: 30.5,
-                  merchant: 'לנדוור',
-                  createdAt: 1555016400000,
-                  classification: 'Coffee'
-                },
-                {
-                  id: 'd9c9e6e10bf74c3595e748d5f5c5b7e5',
-                  amount: 30.5,
-                  merchant: 'ארומה',
-                  createdAt: 1555016400000,
-                  classification: 'Coffee'
-                },
-                {
-                  id: 'e33a6d1e9b554f09b204df24c433558e',
-                  amount: 30.5,
-                  merchant: 'מון סושי בר',
-                  createdAt: 1555016400000,
-                  classification: 'Restaurant'
-                },
-                {
-                  id: '1f28a2cb394d4eb6a80f768c3e3c3b9c',
-                  amount: 30.5,
-                  merchant: 'רמי לוי',
-                  createdAt: 1555016400000,
-                  classification: 'Groceries'
-                },
-              ]}
+              transactions={data}
               sx={{ height: '100%' }}
             />
           </Grid>
@@ -150,11 +141,14 @@ const Page = () => (
     </Box>
   </>
 );
+}
+
 
 Page.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
+
 
 export default Page;

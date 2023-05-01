@@ -24,6 +24,8 @@ const statusMap = {
   refunded: 'error'
 };
 
+const now = new Date();
+
 export const TransactionTable = (props) => {
   const { transactions = [], sx } = props;
 
@@ -50,12 +52,12 @@ export const TransactionTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((transaction) => {
-                const createdAt = format(transaction.createdAt, 'dd/MM/yyyy');
+              {transactions.map((transaction, index) => {
+                const createdAt = format(now, 'dd/MM/yyyy');
                  return (
                   <TableRow
                     hover
-                    key={transaction.id}
+                    key={index}
                   >
                     <TableCell>
                       {createdAt}
@@ -67,7 +69,7 @@ export const TransactionTable = (props) => {
                       {transaction.amount}
                     </TableCell>
                     <TableCell>
-                      {transaction.classification}
+                      {transaction.full_text_classification}
                       {/*<SeverityPill color={statusMap[transaction.status]}>
                         {transaction.status}
                       </SeverityPill>*/}
