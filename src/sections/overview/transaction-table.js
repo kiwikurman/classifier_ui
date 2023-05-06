@@ -15,6 +15,7 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
 

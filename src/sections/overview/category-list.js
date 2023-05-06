@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 
 export const Categories = (props) => {
-  const { categories = [], sx } = props;
+  const { categories = [], sx, getDataClick } = props;
 
   return (
     <Card sx={sx}>
@@ -26,41 +26,14 @@ export const Categories = (props) => {
       <List>
         {categories.map((category, index) => {
           const hasDivider = index < categories.length - 1;
-          const ago = formatDistanceToNow(category.updatedAt);
 
           return (
             <ListItem
               divider={hasDivider}
-              key={category.id}
+              key={index}
             >
-              {/*<ListItemAvatar>
-                {
-                  category.image
-                    ? (
-                      <Box
-                        component="img"
-                        src={category.image}
-                        sx={{
-                          borderRadius: 1,
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                    : (
-                      <Box
-                        sx={{
-                          borderRadius: 1,
-                          backgroundColor: 'neutral.200',
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                }
-              </ListItemAvatar>*/}
               <ListItemText
-                primary={category.name}
+                primary={category.category}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
               />
               <IconButton edge="end">
@@ -83,6 +56,7 @@ export const Categories = (props) => {
           )}
           size="small"
           variant="text"
+          onClick={getDataClick}
         >
           Manage Categories
         </Button>
