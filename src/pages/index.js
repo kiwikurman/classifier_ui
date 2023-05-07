@@ -39,6 +39,7 @@ const Page = () => {
   );
 
   const [categories, setCategories] = useState([{category: "Coffee"}, {category: "Restaurants"}])
+  const [transactions, setTransactions] = useState([])
 
   useEffect(() => {/*
       fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier')
@@ -47,11 +48,15 @@ const Page = () => {
         .catch(error => console.error(error));
     */}, []);
 
-  function getData() {
-    fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier')
-          .then(response => response.json())
-          .then(data => setData(data))
-          .catch(error => console.error(error));
+  function getTransactionList() {
+    fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions')
+      .then(response => response.json())
+      .then(data => {
+                      setTransactions(data);
+                      console.log(data);
+                    }
+           )
+      .catch(error => console.error(error));
   }
 
   function getCategoryList() {
@@ -90,8 +95,9 @@ const Page = () => {
               lg={8}
             >
               <TransactionTable
-                transactions={data.transaction_list}
+                transactions={transactions}
                 sx={{ height: '100%' }}
+                getDataClick={getTransactionList}
               />
             </Grid>
             <Grid

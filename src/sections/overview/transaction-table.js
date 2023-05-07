@@ -15,7 +15,7 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
 
@@ -27,59 +27,45 @@ const statusMap = {
 
 const now = new Date();
 
+
+export default function DataGridDemo() {
+  return (
+    <Box sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
+  );
+}
+
+const columns = [
+    { field: 'date', headerName: 'DATE', type: 'date', width: 150 },
+    { field: 'merchant',headerName: 'MERCHANT',width: 150 },
+    { field: 'amount', headerName: 'AMOUNT', type: 'number', width: 150 },
+    { field: 'full_text_classification', headerName: 'CLASSIFICATION',width: 150, editable: true },
+  ];
+
 export const TransactionTable = (props) => {
-  const { transactions = [], sx } = props;
+  const { transactions = [], sx, getDataClick } = props;
+
 
   return (
     <Card sx={sx}>
       <CardHeader title="Transactions" />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  Date
-                </TableCell>
-                <TableCell>
-                  Merchant
-                </TableCell>
-                <TableCell sortDirection="desc">
-                  Amount
-                </TableCell>
-                <TableCell>
-                  Classification
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {transactions.map((transaction, index) => {
-                const createdAt = format(now, 'dd/MM/yyyy');
-                 return (
-                  <TableRow
-                    hover
-                    key={index}
-                  >
-                    <TableCell>
-                      {createdAt}
-                    </TableCell>
-                    <TableCell>
-                      {transaction.merchant}
-                    </TableCell>
-                    <TableCell>
-                      {transaction.amount}
-                    </TableCell>
-                    <TableCell>
-                      {transaction.full_text_classification}
-                      {/*<SeverityPill color={statusMap[transaction.status]}>
-                        {transaction.status}
-                      </SeverityPill>*/}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+          <DataGrid rows={transactions} columns={columns} />
         </Box>
       </Scrollbar>
       <Divider />
@@ -93,6 +79,7 @@ export const TransactionTable = (props) => {
           )}
           size="small"
           variant="text"
+          onClick={getDataClick}
         >
           Manage Source Files
         </Button>
