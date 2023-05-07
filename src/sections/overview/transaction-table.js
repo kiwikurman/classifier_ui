@@ -50,10 +50,10 @@ export default function DataGridDemo() {
 }
 
 const columns = [
-    { field: 'date', headerName: 'DATE', type: 'date', width: 150 },
-    { field: 'merchant',headerName: 'MERCHANT',width: 150 },
-    { field: 'amount', headerName: 'AMOUNT', type: 'number', width: 150 },
-    { field: 'full_text_classification', headerName: 'CLASSIFICATION',width: 150, editable: true },
+    { field: 'date', headerName: 'DATE', width: 150 },
+    { field: 'merchant',headerName: 'MERCHANT',width: 200 },
+    { field: 'amount', headerName: 'AMOUNT', width: 200 },
+    { field: 'full_text_classification', headerName: 'CLASSIFICATION',width: 200, editable: true },
   ];
 
 export const TransactionTable = (props) => {
