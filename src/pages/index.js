@@ -17,8 +17,8 @@ const now = new Date();
 
 
 const Page = () => {
-  const [data, setData] = useState(
-      {transaction_list : [
+  const [categories, setCategories] = useState([{category: "Coffee"}, {category: "Restaurants"}])
+  const [transactions, setTransactions] = useState([
           {
             id: 'ddc0a50f0c764e02a8d9a05a59ca1611',
             amount: 30.5,
@@ -33,13 +33,7 @@ const Page = () => {
             createdAt: 1555016400000,
             full_text_classification: 'Coffee'
           }
-        ],
-       bowNames : [{category: "Coffee"}, {category: "Restaurants"}]
-      }
-  );
-
-  const [categories, setCategories] = useState([{category: "Coffee"}, {category: "Restaurants"}])
-  const [transactions, setTransactions] = useState([])
+        ])
 
   useEffect(() => {/*
       fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier')
@@ -98,6 +92,7 @@ const Page = () => {
                 transactions={transactions}
                 sx={{ height: '100%' }}
                 getDataClick={getTransactionList}
+                setRows={setTransactions}
               />
             </Grid>
             <Grid
