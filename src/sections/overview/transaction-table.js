@@ -19,7 +19,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-
+const { v4: uuidv4 } = require('uuid');
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
@@ -32,23 +32,38 @@ import {
   GridActionsCellItem,
 } from '@mui/x-data-grid';
 
-const statusMap = {
-  pending: 'warning',
-  delivered: 'success',
-  refunded: 'error'
-};
+
 
 const now = new Date();
+
+const handleSendList = async (transactionList) => {
+  const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
+  {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ transactionList }),
+  });
+
+  if (response.ok) {
+    console.log('List sent successfully!');
+  } else {
+    console.log('Error sending list.');
+  }
+};
+
 
 function EditToolbar(props) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
+    const id = uuidv4();
+    setRows((oldRows) => [{ id, amount: 0, merchant: '', date: "", full_text_classification: "", isNew: true }, ...oldRows]);
     setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+    ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'date' }
     }));
   };
 
@@ -90,7 +105,7 @@ export const TransactionTable = (props) => {
   };
 
   const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+    setRows(transactions.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id) => () => {
@@ -99,15 +114,17 @@ export const TransactionTable = (props) => {
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = rows.find((row) => row.id === id);
+    const editedRow = transactions.find((row) => row.id === id);
     if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
+      setRows(transactions.filter((row) => row.id !== id));
     }
   };
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    const a = transactions.map((row) => (row.id === newRow.id ? updatedRow : row));
+    handleSendList(a);
+    setRows(a);
     return updatedRow;
   };
 
@@ -116,9 +133,9 @@ export const TransactionTable = (props) => {
   };
   
   const columns = [
-    { field: 'date', headerName: 'DATE', width: 150 },
-    { field: 'merchant',headerName: 'MERCHANT',width: 200 },
-    { field: 'amount', headerName: 'AMOUNT', width: 200 },
+    { field: 'date', headerName: 'DATE', width: 150, editable: true  },
+    { field: 'merchant',headerName: 'MERCHANT',width: 200, editable: true  },
+    { field: 'amount', headerName: 'AMOUNT', width: 200, editable: true  },
     { field: 'full_text_classification', headerName: 'CLASSIFICATION',width: 200, editable: true },
     {
       field: 'actions',
@@ -179,6 +196,7 @@ export const TransactionTable = (props) => {
             onRowEditStart={handleRowEditStart}
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={(error) => console.log(error)}
             slots={{
               toolbar: EditToolbar,
             }}
