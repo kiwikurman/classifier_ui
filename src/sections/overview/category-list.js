@@ -26,10 +26,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function FormDialog(props) {
-const { open, handleClose, t } = props;
+const { open, handleClose, theCategory } = props;
+  const words = theCategory.words.join(", ");
   return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{t}</DialogTitle>
+        <DialogTitle>{theCategory.category}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             bow words go here?
@@ -38,12 +39,13 @@ const { open, handleClose, t } = props;
             autoFocus
             margin="normal"
             id="name"
-            label="type the words.."
+            defaultValue={words}
             type="text"
             fullWidth
             variant="standard"
             multiline="true"
             size='medium'
+            sx={{width: 500}}
           />
         </DialogContent>
         <DialogActions>
@@ -57,11 +59,11 @@ const { open, handleClose, t } = props;
 export const Categories = (props) => {
   const { categories = [], sx, getDataClick } = props;
   const [open, setOpen] = React.useState(false);
-  const [theTittle, setTheTittle] = React.useState("");
+  const [currentCategory, setCurrentCategory] = React.useState({"category": "groceries", "words": ["lala"]});
 
-  const handleClickOpen = (event, newTittle) => {
+  const handleClickOpen = (event, theCategory) => {
     setOpen(true);
-    setTheTittle(newTittle);
+    setCurrentCategory(theCategory);
   };
 
   const handleClose = () => {
@@ -78,6 +80,7 @@ export const Categories = (props) => {
       <List>
         {categories.map((category, index) => {
           const hasDivider = index < categories.length - 1;
+          [{"category": "groceries", "words": ["סופר פארם", "רמי לוי", "אפייה", "אפיה", "אייזיקס"]}]
           return (
             <ListItem
               divider={hasDivider}
@@ -85,19 +88,19 @@ export const Categories = (props) => {
             >
               <ListItemText
                 primary={category.category}
-                primaryTypographyProps={{ variant: 'subtitle1' }}
+                primaryTypographyProps={{ variant: 'subtitle2' }}
+                secondary="subtotal: "
               />
-              <IconButton edge="end" onClick={() => handleClickOpen(event, category.category)}>
+              <IconButton edge="end" onClick={() => handleClickOpen(event, category)}>
                 <SvgIcon>
                   <EllipsisVerticalIcon />
-
                 </SvgIcon>
               </IconButton>
               <FormDialog
-              open={open}
-              handleClose={handleClose}
-              t = {theTittle}
-            />
+                open={open}
+                handleClose={handleClose}
+                theCategory={currentCategory}
+              />
             </ListItem>
           );
         })}

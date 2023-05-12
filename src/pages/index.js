@@ -17,7 +17,8 @@ const now = new Date();
 
 
 const Page = () => {
-  const [categories, setCategories] = useState([{category: "Coffee"}, {category: "Restaurants"}])
+  const [categories, setCategories] = useState([{"category": "groceries", "words": ["סופר פארם", "רמי לוי", "אפייה", "אפיה", "אייזיקס"]}])
+
   const [transactions, setTransactions] = useState([
           {
             id: 'ddc0a50f0c764e02a8d9a05a59ca1611',
