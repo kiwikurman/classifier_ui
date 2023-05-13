@@ -79,6 +79,16 @@ const Page = () => {
           py: 1
         }}
       >
+         <Grid
+              xs={12}
+              md={6}
+              lg={4}
+            >
+              <OverviewSales
+                chartSeries={[1111,2111,3111, 1111,2111,3111,1111,2111,3111,1111,2111,3111]}
+                sx={{ height: '80%',}}
+              />
+            </Grid>
         <Container maxWidth="xl">
           <Grid
             container
@@ -106,7 +116,9 @@ const Page = () => {
                 sx={{ height: '100%' }}
                 getDataClick={getCategoryList}
               />
+
             </Grid>
+
           </Grid>
         </Container>
       </Box>

@@ -26,8 +26,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function FormDialog(props) {
-const { open, handleClose, theCategory } = props;
+const { open, handleClose, handleSendUpdate, theCategory } = props;
   const words = theCategory.words.join(", ");
+  const [updatedText, setUpdatedText] = React.useState("");
+
+  const handleTextFieldChange = (event) => {
+    setUpdatedText(event.target.value);
+  };
+
   return (
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{theCategory.category}</DialogTitle>
@@ -46,11 +52,17 @@ const { open, handleClose, theCategory } = props;
             multiline="true"
             size='medium'
             sx={{width: 500}}
+            onChange={handleTextFieldChange}
+            InputProps={{
+              inputProps: {
+                style: { textAlign: "right" },
+              }
+            }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Update New Words</Button>
+          <Button onClick={() => handleSendUpdate(theCategory, updatedText)}>Update New Words</Button>
         </DialogActions>
       </Dialog>
   );
@@ -69,6 +81,31 @@ export const Categories = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSendUpdate = async (category, updatedText) => {
+    setOpen(false);
+    let words_list = updatedText.split(", ");
+    const newCategory = {
+      "category": category.category,
+      "words": { words_list }
+    };
+
+    const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/bows',
+    {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ newCategory }),
+    });
+    if (response.ok) {
+      console.log('List sent successfully!');
+    } else {
+      console.log('Error sending list.');
+    }
+  };
+
 
   let counter = 1;
   const handle = (event, param) => {
@@ -89,7 +126,7 @@ export const Categories = (props) => {
               <ListItemText
                 primary={category.category}
                 primaryTypographyProps={{ variant: 'subtitle2' }}
-                secondary="subtotal: "
+                secondary="subtotal: 25"
               />
               <IconButton edge="end" onClick={() => handleClickOpen(event, category)}>
                 <SvgIcon>
@@ -99,6 +136,7 @@ export const Categories = (props) => {
               <FormDialog
                 open={open}
                 handleClose={handleClose}
+                handleSendUpdate={handleSendUpdate}
                 theCategory={currentCategory}
               />
             </ListItem>

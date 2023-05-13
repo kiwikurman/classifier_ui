@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+
 import {
   Box,
   Button,
@@ -71,6 +73,12 @@ function EditToolbar(props) {
     <GridToolbarContainer>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add record
+      </Button>
+      <Button color="primary" startIcon={<SvgIcon fontSize="small">
+                                            <AutoGraphIcon />
+                                        </SvgIcon>}
+                              onClick={handleClick}>
+        Classify
       </Button>
     </GridToolbarContainer>
   );
