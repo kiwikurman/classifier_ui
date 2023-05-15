@@ -58,11 +58,11 @@ const handleSendList = async (transactionList) => {
 
 
 function EditToolbar(props) {
-  const { setRows, setRowModesModel } = props;
+  const { setTransactions, setRowModesModel } = props;
 
   const handleClick = () => {
     const id = uuidv4();
-    setRows((oldRows) => [{ id, amount: 0, merchant: '', date: "", full_text_classification: "", isNew: true }, ...oldRows]);
+    setTransactions((oldTransactions) => ({...oldTransactions, transactions: [{ id, amount: 0, merchant: '', date: "", full_text_classification: "", isNew: true }, ...oldTransactions.transactions]}));
     setRowModesModel((oldModel) => ({
     ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: 'date' }
@@ -86,14 +86,14 @@ function EditToolbar(props) {
 
 EditToolbar.propTypes = {
   setRowModesModel: PropTypes.func.isRequired,
-  setRows: PropTypes.func.isRequired,
+  setTransactions: PropTypes.func.isRequired,
 };
 
 
 
 
 export const TransactionTable = (props) => {
-  const { transactions = [], sx, getDataClick, setRows } = props;
+  const { transactions = {}, sx, getDataClick, setTransactions } = props;
   const [rowModesModel, setRowModesModel] = React.useState({});
 
   const handleRowEditStart = (params, event) => {
@@ -113,7 +113,9 @@ export const TransactionTable = (props) => {
   };
 
   const handleDeleteClick = (id) => () => {
-    setRows(transactions.filter((row) => row.id !== id));
+    const t = transactions.transactions.filter((row) => row.id !== id);
+    setTransactions((oldTransactions) => ({...oldTransactions, transactions: t}));
+    handleSendList(t);
   };
 
   const handleCancelClick = (id) => () => {
@@ -122,17 +124,19 @@ export const TransactionTable = (props) => {
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = transactions.find((row) => row.id === id);
+    const editedRow = transactions.transactions.find((row) => row.id === id);
     if (editedRow.isNew) {
-      setRows(transactions.filter((row) => row.id !== id));
+      const t = transactions.transactions.filter((row) => row.id !== id);
+      setTransactions((oldTransactions) => ({...oldTransactions, transactions: t}));
     }
   };
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
-    const a = transactions.map((row) => (row.id === newRow.id ? updatedRow : row));
+    const a = transactions.transactions.map((row) => (row.id === newRow.id ? updatedRow : row));
+    transactions.transactions = a;
     handleSendList(a);
-    setRows(a);
+    setTransactions(transactions);
     return updatedRow;
   };
 
@@ -196,7 +200,7 @@ export const TransactionTable = (props) => {
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <DataGrid
-            rows={transactions}
+            rows={transactions.transactions}
             columns={columns}
             editMode="row"
             rowModesModel={rowModesModel}
@@ -209,7 +213,7 @@ export const TransactionTable = (props) => {
               toolbar: EditToolbar,
             }}
             slotProps={{
-              toolbar: { setRows, setRowModesModel },
+              toolbar: { setTransactions, setRowModesModel },
             }}
            />
         </Box>
@@ -235,7 +239,10 @@ export const TransactionTable = (props) => {
 };
 
 TransactionTable.prototype = {
-  transactions: PropTypes.array,
+  transactions: PropTypes.shape({
+      transactions: PropTypes.array,
+      summary: PropTypes.array
+    }),
   sx: PropTypes.object
 };
 

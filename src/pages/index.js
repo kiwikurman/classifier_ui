@@ -19,29 +19,32 @@ const now = new Date();
 const Page = () => {
   const [categories, setCategories] = useState([{"category": "groceries", "words": ["סופר פארם", "רמי לוי", "אפייה", "אפיה", "אייזיקס"]}])
 
-  const [transactions, setTransactions] = useState([
+  const [transactions, setTransactions] = useState(
+      {
+        "transactions": [
           {
             id: 'ddc0a50f0c764e02a8d9a05a59ca1611',
-            amount: 30.5,
+            amount: 100,
             merchant: 'ארומה',
             createdAt: 1555016400000,
             full_text_classification: 'Coffee'
           },
           {
             id: '22f4566ab8d24685a5466b1a3ec1fda7',
-            amount: 30.5,
+            amount: 200,
             merchant: 'לנדוור',
             createdAt: 1555016400000,
-            full_text_classification: 'Coffee'
+            full_text_classification: 'Restaurants'
           }
-        ])
+        ],
+        "summary" : [
+          {"category": "Coffee", "subtotal": 100},
+          {"category": "Restaurants", "subtotal": 200}
+        ]
+      })
 
-  useEffect(() => {/*
-      fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier')
-        .then(response => response.json())
-        .then(data => setData(data))
-        .catch(error => console.error(error));
-    */}, []);
+
+
 
   function getTransactionList() {
     fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions')
@@ -73,27 +76,54 @@ const Page = () => {
         </title>
       </Head>
       <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 1
-        }}
-      >
-         <Grid
-              xs={12}
-              md={6}
-              lg={4}
-            >
-              <OverviewSales
-                chartSeries={[1111,2111,3111, 1111,2111,3111,1111,2111,3111,1111,2111,3111]}
-                sx={{ height: '80%',}}
-              />
-            </Grid>
-        <Container maxWidth="xl">
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8
+      }}
+    >
+      <Container maxWidth="xl">
+        <Grid
+          container
+          spacing={3}
+        >
           <Grid
-            container
-            spacing={3}
+            xs={12}
+            lg={8}
           >
+            <OverviewSales
+              chartSeries={[
+                {
+                  name: 'This year',
+                  data: [18, 16, 5, 8, 3, 14, 14, 16, 17, 19, 18, 20]
+                },
+                {
+                  name: 'Last year',
+                  data: [12, 11, 4, 6, 2, 9, 9, 10, 11, 12, 13, 13]
+                },
+               {
+                name: 'the year before',
+                data: [3, 3, 3, 6, 6, 9, 4, 10, 23, 12, 23, 13]
+                },
+               {
+                name: 'the year before',
+                data: [12, 3, 3, 3, 2, 23, 9, 23, 11, 12, 13, 13]
+                }
+              ]}
+              sx={{ height: '100%' }}
+            />
+          </Grid>
+          <Grid
+            xs={12}
+            md={6}
+            lg={4}
+          >
+            <OverviewTraffic
+              chartSeries={[63, 15, 22]}
+              labels={['Desktop', 'Tablet', 'Phone']}
+              sx={{ height: '100%' }}
+            />
+          </Grid>
           <Grid
               xs={12}
               md={12}
@@ -103,7 +133,7 @@ const Page = () => {
                 transactions={transactions}
                 sx={{ height: '100%' }}
                 getDataClick={getTransactionList}
-                setRows={setTransactions}
+                setTransactions={setTransactions}
               />
             </Grid>
             <Grid

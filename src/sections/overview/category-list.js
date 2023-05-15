@@ -49,7 +49,6 @@ const { open, handleClose, handleSendUpdate, theCategory } = props;
             type="text"
             fullWidth
             variant="standard"
-            multiline="true"
             size='medium'
             sx={{width: 500}}
             onChange={handleTextFieldChange}
