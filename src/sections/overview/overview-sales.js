@@ -13,7 +13,7 @@ import {
 import { alpha, useTheme } from '@mui/material/styles';
 import { Chart } from 'src/components/chart';
 
-const useChartOptions = () => {
+const useChartOptions = (theCategories) => {
   const theme = useTheme();
 
   return {
@@ -71,20 +71,7 @@ const useChartOptions = () => {
         color: theme.palette.divider,
         show: true
       },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ],
+      categories: theCategories,
       labels: {
         offsetY: 5,
         style: {
@@ -94,7 +81,7 @@ const useChartOptions = () => {
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (value),
         offsetX: -10,
         style: {
           colors: theme.palette.text.secondary
@@ -105,9 +92,20 @@ const useChartOptions = () => {
 };
 
 export const OverviewSales = (props) => {
-  const { chartSeries, sx } = props;
-  const chartOptions = useChartOptions();
+  const { transactions, sx } = props;
+  const theCategories = transactions.summary.map(obj => obj.category);
 
+  const theSeries = transactions.summary.map(obj => obj.subtotal);
+  const chart_data = [
+                {
+                  name: 'This year',
+                  data: theSeries
+                }]
+
+
+
+  const chartOptions = useChartOptions(theCategories);
+  console.log(theSeries);
   return (
     <Card sx={sx}>
       <CardHeader
@@ -130,7 +128,7 @@ export const OverviewSales = (props) => {
         <Chart
           height={350}
           options={chartOptions}
-          series={chartSeries}
+          series={chart_data}
           type="bar"
           width="100%"
         />
@@ -154,6 +152,9 @@ export const OverviewSales = (props) => {
 };
 
 OverviewSales.protoTypes = {
-  chartSeries: PropTypes.array.isRequired,
+  transactions: PropTypes.shape({
+      transactions: PropTypes.array,
+      summary: PropTypes.array
+    }),
   sx: PropTypes.object
 };
