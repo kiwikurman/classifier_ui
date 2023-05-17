@@ -5,7 +5,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { OverviewBudget } from 'src/sections/overview/overview-budget';
 import { TransactionTable } from 'src/sections/overview/transaction-table';
 import { Categories } from 'src/sections/overview/category-list';
-import { OverviewSales } from 'src/sections/overview/overview-sales';
+import { ChartCategorySpending } from 'src/sections/overview/chart-category-spending';
 import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
 import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
 import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
@@ -91,7 +91,7 @@ const Page = () => {
             xs={12}
             lg={8}
           >
-            <OverviewSales
+            <ChartCategorySpending
               transactions={transactions}
               sx={{ height: '100%' }}
             />

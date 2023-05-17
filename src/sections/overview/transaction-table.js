@@ -27,6 +27,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import {
   GridRowModes,
   DataGridPro,
@@ -58,7 +59,7 @@ const handleSendList = async (transactionList) => {
 
 
 function EditToolbar(props) {
-  const { setTransactions, setRowModesModel } = props;
+  const { setTransactions, setRowModesModel, getDataClick } = props;
 
   const handleClick = () => {
     const id = uuidv4();
@@ -97,6 +98,11 @@ function EditToolbar(props) {
         onClick={calc_sub_total}>
             Sub-Total
       </Button>
+      <Button color="primary"
+        startIcon={<SvgIcon fontSize="small"><ArrowPathIcon /></SvgIcon>}
+        onClick={getDataClick}>
+            Refresh Chart
+      </Button>
     </GridToolbarContainer>
   );
 }
@@ -104,6 +110,7 @@ function EditToolbar(props) {
 EditToolbar.propTypes = {
   setRowModesModel: PropTypes.func.isRequired,
   setTransactions: PropTypes.func.isRequired,
+  getDataClick: PropTypes.func.isRequired,
 };
 
 
@@ -230,7 +237,7 @@ export const TransactionTable = (props) => {
               toolbar: EditToolbar,
             }}
             slotProps={{
-              toolbar: { setTransactions, setRowModesModel },
+              toolbar: { setTransactions, setRowModesModel, getDataClick },
             }}
            />
         </Box>

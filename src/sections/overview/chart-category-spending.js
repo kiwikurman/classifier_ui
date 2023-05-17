@@ -91,11 +91,16 @@ const useChartOptions = (theCategories) => {
   };
 };
 
-export const OverviewSales = (props) => {
+export const ChartCategorySpending = (props) => {
   const { transactions, sx } = props;
   const theCategories = transactions.summary.map(obj => obj.category);
 
   const theSeries = transactions.summary.map(obj => obj.subtotal);
+  let grand_total = 0;
+  theSeries.forEach((number) => {
+      grand_total += number;
+  });
+  const grand_total_text = "grand total: " + grand_total;
   const chart_data = [
                 {
                   name: 'This year',
@@ -122,7 +127,7 @@ export const OverviewSales = (props) => {
             Sync
           </Button>
         )}
-        title="Sales"
+        title="Category Spending"
       />
       <CardContent>
         <Chart
@@ -137,21 +142,21 @@ export const OverviewSales = (props) => {
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
           color="inherit"
-          endIcon={(
+          /*endIcon={(
             <SvgIcon fontSize="small">
               <ArrowRightIcon />
             </SvgIcon>
-          )}
+          )}*/
           size="small"
         >
-          Overview
+          {grand_total_text}
         </Button>
       </CardActions>
     </Card>
   );
 };
 
-OverviewSales.protoTypes = {
+ChartCategorySpending.protoTypes = {
   transactions: PropTypes.shape({
       transactions: PropTypes.array,
       summary: PropTypes.array
