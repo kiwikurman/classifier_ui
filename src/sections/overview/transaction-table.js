@@ -28,6 +28,9 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
+import StorageIcon from '@mui/icons-material/Storage';
+import ClassIcon from '@mui/icons-material/Class';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {
   GridRowModes,
   DataGridPro,
@@ -43,7 +46,7 @@ const handleSendList = async (transactionList) => {
   const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
   {
     method: 'POST',
-    mode: 'no-cors',
+    mode: "no-cors",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -58,8 +61,70 @@ const handleSendList = async (transactionList) => {
 };
 
 
+
+
+function FileUploadButton() {
+  const [selectedFile, setSelectedFile] = React.useState(null);
+  const fileInputRef = React.useRef(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    handleFileUpload(event.target.files[0]);
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileUpload = (the_file) => {
+    if (the_file) {
+      console.log(the_file);
+      const fileData = new Blob([the_file], { type: 'application/vnd.ms-excel' });
+      const formData = new FormData();
+      formData.append('file', fileData, the_file.name);
+
+      fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/input_files',
+      {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          // Handle the response from the server
+          // e.g., display success message
+          console.log('File uploaded successfully!');
+        } else {
+          // Handle server errors or non-OK responses
+          console.error('Error uploading file. Status:', response.status);
+        }
+      })
+      .catch(error => {
+        // Handle any errors that occur during the request
+        console.error('Error uploading file:', error);
+      });
+    } else {
+      console.log('No file selected.');
+    }
+  };
+
+  return (
+    <div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
+      <Button  color="primary" onClick={handleButtonClick} startIcon={<CloudUploadIcon />}>
+        Upload
+      </Button>
+    </div>
+  );
+}
+
+
 function EditToolbar(props) {
-  const { setTransactions, setRowModesModel, getDataClick } = props;
+  const { setTransactions, setRowModesModel, getDataClick, getCategories } = props;
 
   const handleClick = () => {
     const id = uuidv4();
@@ -70,38 +135,58 @@ function EditToolbar(props) {
     }));
   };
 
-  const calc_sub_total = async () => {
-  const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/classify',
+  const post_action = async (action) => {
+  fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/' + action,
   {
     method: 'POST',
-    mode: 'no-cors',
+    mode: "no-cors",
     headers: {
       'Content-Type': 'application/json',
     },
     body: "",
-  });
-
-  if (response.ok) {
-    console.log('List sent successfully!');
-  } else {
-    console.log('Error sending list.');
-  }
+  }).then(response => {
+        if (response.ok) {
+          // Handle the response from the server
+          // e.g., display success message
+          console.log('post to ' + action + " successful");
+        } else {
+          // Handle server errors or non-OK responses
+          console.log('Error post to ' + action + ' successful. Status:', response.status);
+        }
+      })
+      .catch(error => {
+        // Handle any errors that occur during the request
+        console.error('Error posting:', error);
+      });
 };
+
+
 
   return (
     <GridToolbarContainer>
+      <FileUploadButton />
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add record
       </Button>
       <Button color="primary"
+        startIcon={<SvgIcon fontSize="small"><StorageIcon /></SvgIcon>}
+        onClick={getDataClick}>
+            Load Chart
+      </Button>
+      <Button color="primary"
+        startIcon={<SvgIcon fontSize="small"><ClassIcon /></SvgIcon>}
+        onClick={getCategories}>
+            Load Categories
+      </Button>
+      <Button color="primary"
         startIcon={<SvgIcon fontSize="small"><AutoGraphIcon /></SvgIcon>}
-        onClick={calc_sub_total}>
+        onClick={() => post_action("sub_total")}>
             Sub-Total
       </Button>
       <Button color="primary"
-        startIcon={<SvgIcon fontSize="small"><ArrowPathIcon /></SvgIcon>}
-        onClick={getDataClick}>
-            Refresh Chart
+        startIcon={<SvgIcon fontSize="small"><AutoGraphIcon /></SvgIcon>}
+        onClick={() => post_action("classify")}>
+            Classify
       </Button>
     </GridToolbarContainer>
   );
@@ -111,13 +196,14 @@ EditToolbar.propTypes = {
   setRowModesModel: PropTypes.func.isRequired,
   setTransactions: PropTypes.func.isRequired,
   getDataClick: PropTypes.func.isRequired,
+  getCategories: PropTypes.func.isRequired,
 };
 
 
 
 
 export const TransactionTable = (props) => {
-  const { transactions = {}, sx, getDataClick, setTransactions } = props;
+  const { transactions = {}, sx, getDataClick, setTransactions, getCategories} = props;
   const [rowModesModel, setRowModesModel] = React.useState({});
 
   const handleRowEditStart = (params, event) => {
@@ -237,26 +323,13 @@ export const TransactionTable = (props) => {
               toolbar: EditToolbar,
             }}
             slotProps={{
-              toolbar: { setTransactions, setRowModesModel, getDataClick },
+              toolbar: { setTransactions, setRowModesModel, getDataClick, getCategories},
             }}
            />
         </Box>
       </Scrollbar>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-          variant="text"
-          onClick={getDataClick}
-        >
-          Manage Source Files
-        </Button>
       </CardActions>
     </Card>
   );

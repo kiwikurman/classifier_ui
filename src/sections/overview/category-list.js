@@ -24,44 +24,65 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import CategorySharpIcon from '@mui/icons-material/CategorySharp';
+
 
 function FormDialog(props) {
-const { open, handleClose, handleSendUpdate, theCategory } = props;
-  const words = theCategory.words.join(", ");
+const { open, handleClose, handleSendUpdate, theCategory, isNew, handleDelete } = props;
+  const words = theCategory.words.join(",");
   const [updatedText, setUpdatedText] = React.useState("");
+  const [updatedCategoryName, setUpdatedCategoryName] = React.useState("");
 
-  const handleTextFieldChange = (event) => {
+  const handleWordsChange = (event) => {
     setUpdatedText(event.target.value);
+  };
+
+  const handleCategoryNameChange = (event) => {
+    setUpdatedCategoryName(event.target.value);
   };
 
   return (
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{theCategory.category}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            bow words go here?
-          </DialogContentText>
-          <TextField
+          { (isNew) && <DialogContentText component="span">
+            <TextField
+              margin="normal"
+              id="category_input_text"
+              defaultValue={theCategory.category}
+              type="text"
+              fullWidth
+              variant="filled"
+              size='small'
+              sx={{width: 500}}
+              onChange={handleCategoryNameChange}
+            />
+          </DialogContentText> }
+          <DialogContentText  component="span">
+           <TextField
             autoFocus
             margin="normal"
-            id="name"
+            id="words_input_text"
             defaultValue={words}
             type="text"
             fullWidth
-            variant="standard"
+            variant="filled"
             size='medium'
             sx={{width: 500}}
-            onChange={handleTextFieldChange}
+            onChange={handleWordsChange}
             InputProps={{
               inputProps: {
                 style: { textAlign: "right" },
               }
             }}
           />
+          </DialogContentText>
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={() => handleSendUpdate(theCategory, updatedText)}>Update New Words</Button>
+          <Button onClick={() => handleDelete(theCategory, updatedText, updatedCategoryName)}>Delete The Bag</Button>
+          <Button onClick={() => handleSendUpdate(theCategory, updatedText, updatedCategoryName)}>Update New Words</Button>
         </DialogActions>
       </Dialog>
   );
@@ -70,29 +91,36 @@ const { open, handleClose, handleSendUpdate, theCategory } = props;
 export const Categories = (props) => {
   const { categories = [], sx, getDataClick } = props;
   const [open, setOpen] = React.useState(false);
+  const [isNew, setIsNew] = React.useState(false);
   const [currentCategory, setCurrentCategory] = React.useState({"category": "groceries", "words": ["lala"]});
 
-  const handleClickOpen = (event, theCategory) => {
+  const handleClickOpen = (event, theCategory, is_new) => {
     setOpen(true);
     setCurrentCategory(theCategory);
+    setIsNew(is_new);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSendUpdate = async (category, updatedText) => {
+  const handleSendUpdate = async (category, updatedText, updatedCategoryName) => {
     setOpen(false);
-    let words_list = updatedText.split(", ");
+    let words_list = updatedText.split(",");
+    let cat_name = (isNew)?  updatedCategoryName : category.category;
+    console.log(updatedCategoryName);
+    console.log(category.category);
+    console.log(cat_name);
+    console.log(words_list);
     const newCategory = {
-      "category": category.category,
-      "words": { words_list }
+      "category": cat_name,
+      "words": words_list,
     };
 
     const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/bows',
     {
       method: 'POST',
-      mode: 'no-cors',
+      mode: "no-cors",
       headers: {
         'Content-Type': 'application/json',
       },
@@ -105,18 +133,34 @@ export const Categories = (props) => {
     }
   };
 
+  const handleDelete = async (category, updatedText, updatedCategoryName) => {
+    setOpen(false);
+    const bow_base_url = 'https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/bows';
+    const bow_to_delete = category.category;
+    const url = bow_base_url + "/" + bow_to_delete;
+    alert(url);
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        mode: 'cors',
+      });
 
-  let counter = 1;
-  const handle = (event, param) => {
-    alert(param);
+      if (response.ok) {
+        console.log('Request successful');
+      } else {
+        console.error('Request failed');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+    }
   };
+
   return (
     <Card sx={sx}>
       <CardHeader title="My Categories" />
       <List>
         {categories.map((category, index) => {
           const hasDivider = index < categories.length - 1;
-          [{"category": "groceries", "words": ["סופר פארם", "רמי לוי", "אפייה", "אפיה", "אייזיקס"]}]
           return (
             <ListItem
               divider={hasDivider}
@@ -127,17 +171,11 @@ export const Categories = (props) => {
                 primaryTypographyProps={{ variant: 'subtitle2' }}
                 secondary="subtotal: 25"
               />
-              <IconButton edge="end" onClick={() => handleClickOpen(event, category)}>
+              <IconButton edge="end" onClick={() => handleClickOpen(event, category, false)}>
                 <SvgIcon>
                   <EllipsisVerticalIcon />
                 </SvgIcon>
               </IconButton>
-              <FormDialog
-                open={open}
-                handleClose={handleClose}
-                handleSendUpdate={handleSendUpdate}
-                theCategory={currentCategory}
-              />
             </ListItem>
           );
         })}
@@ -148,16 +186,24 @@ export const Categories = (props) => {
           color="inherit"
           endIcon={(
             <SvgIcon fontSize="small">
-              <ArrowRightIcon />
+              <CategorySharpIcon />
             </SvgIcon>
           )}
           size="small"
           variant="text"
-          onClick={getDataClick}
-        >
-          Manage Categories
+          onClick={() => handleClickOpen(event, {"category": "new category", "words": ["no", "words", "yet"]}, true)}
+         >
+          New Category
         </Button>
       </CardActions>
+          <FormDialog
+                open={open}
+                handleClose={handleClose}
+                handleSendUpdate={handleSendUpdate}
+                theCategory={currentCategory}
+                isNew={isNew}
+                handleDelete={handleDelete}
+              />
     </Card>
   );
 };

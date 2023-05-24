@@ -117,6 +117,7 @@ const Page = () => {
                 sx={{ height: '100%' }}
                 getDataClick={getTransactionList}
                 setTransactions={setTransactions}
+                getCategories={getCategoryList}
               />
             </Grid>
             <Grid
