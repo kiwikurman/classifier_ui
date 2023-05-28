@@ -42,23 +42,7 @@ import {
 
 const now = new Date();
 
-const handleSendList = async (transactionList) => {
-  const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
-  {
-    method: 'POST',
-    mode: "no-cors",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ transactionList }),
-  });
 
-  if (response.ok) {
-    console.log('List sent successfully!');
-  } else {
-    console.log('Error sending list.');
-  }
-};
 
 
 
@@ -135,6 +119,8 @@ function EditToolbar(props) {
     }));
   };
 
+
+
   const post_action = async (action) => {
   fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/' + action,
   {
@@ -153,6 +139,7 @@ function EditToolbar(props) {
           // Handle server errors or non-OK responses
           console.log('Error post to ' + action + ' successful. Status:', response.status);
         }
+        getDataClick();
       })
       .catch(error => {
         // Handle any errors that occur during the request
@@ -180,11 +167,6 @@ function EditToolbar(props) {
       </Button>
       <Button color="primary"
         startIcon={<SvgIcon fontSize="small"><AutoGraphIcon /></SvgIcon>}
-        onClick={() => post_action("sub_total")}>
-            Sub-Total
-      </Button>
-      <Button color="primary"
-        startIcon={<SvgIcon fontSize="small"><AutoGraphIcon /></SvgIcon>}
         onClick={() => post_action("classify")}>
             Classify
       </Button>
@@ -205,6 +187,24 @@ EditToolbar.propTypes = {
 export const TransactionTable = (props) => {
   const { transactions = {}, sx, getDataClick, setTransactions, getCategories} = props;
   const [rowModesModel, setRowModesModel] = React.useState({});
+
+  const handleSendList = async (transactionList) => {
+    const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
+    {
+      method: 'POST',
+      mode: "no-cors",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ transactionList }),
+    });
+    getDataClick();
+    if (response.ok) {
+      console.log('List sent successfully!');
+    } else {
+      console.log('Error sending list.');
+    }
+  };
 
   const handleRowEditStart = (params, event) => {
     event.defaultMuiPrevented = true;
