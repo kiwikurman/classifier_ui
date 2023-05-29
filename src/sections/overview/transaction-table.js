@@ -47,7 +47,8 @@ const now = new Date();
 
 
 
-function FileUploadButton() {
+function FileUploadButton(props) {
+  const { getData } = props;
   const [selectedFile, setSelectedFile] = React.useState(null);
   const fileInputRef = React.useRef(null);
 
@@ -73,6 +74,7 @@ function FileUploadButton() {
         body: formData
       })
       .then(response => {
+        getData();
         if (response.ok) {
           // Handle the response from the server
           // e.g., display success message
@@ -151,7 +153,7 @@ function EditToolbar(props) {
 
   return (
     <GridToolbarContainer>
-      <FileUploadButton />
+      <FileUploadButton getData={getDataClick}/>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add record
       </Button>
@@ -242,7 +244,8 @@ export const TransactionTable = (props) => {
   };
 
   const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
+    const bad_hack = (newRow.full_text_classification.length === 0) ? null : false;
+    const updatedRow = { ...newRow, isNew: bad_hack };
     const a = transactions.transactions.map((row) => (row.id === newRow.id ? updatedRow : row));
     transactions.transactions = a;
     handleSendList(a);

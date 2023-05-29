@@ -37,9 +37,13 @@ const Page = () => {
             full_text_classification: 'Restaurants'
           }
         ],
-        "summary" : [
+        "summary": [
           {"category": "Coffee", "subtotal": 100},
           {"category": "Restaurants", "subtotal": 200}
+        ],
+        "bows": [
+          {"category": "groceries", "words": ["סופר פארם", "רמי לוי", "אפייה", "אפיה", "אייזיקס"]},
+          {"category": "restaurants", "words": ["פלאפל", "שווארמה", "מיסעדה", "סושי", "מסעדה"]},
         ]
       })
 
@@ -101,11 +105,7 @@ const Page = () => {
             md={6}
             lg={4}
           >
-            <OverviewTraffic
-              chartSeries={[63, 15, 22]}
-              labels={['Desktop', 'Tablet', 'Phone']}
-              sx={{ height: '100%' }}
-            />
+
           </Grid>
           <Grid
               xs={12}
@@ -146,6 +146,7 @@ Page.getLayout = (page) => (
     {page}
   </DashboardLayout>
 );
+
 
 
 export default Page;
