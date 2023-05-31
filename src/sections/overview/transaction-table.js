@@ -71,7 +71,10 @@ function FileUploadButton(props) {
       fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/input_files',
       {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
       .then(response => {
         getData();
