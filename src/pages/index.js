@@ -76,7 +76,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          SmartClassifier
+          SmartCard
         </title>
       </Head>
       <Box

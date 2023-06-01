@@ -104,8 +104,11 @@ function FileUploadButton(props) {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <Button  color="primary" onClick={handleButtonClick} startIcon={<CloudUploadIcon />}>
-        Upload
+      <Button
+        color="primary"
+        onClick={handleButtonClick}
+        startIcon={<CloudUploadIcon />}>
+          Upload
       </Button>
     </div>
   );
@@ -157,8 +160,11 @@ function EditToolbar(props) {
   return (
     <GridToolbarContainer>
       <FileUploadButton getData={getDataClick}/>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
+      <Button
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={handleClick}>
+          Add record
       </Button>
       <Button color="primary"
         startIcon={<SvgIcon fontSize="small"><StorageIcon /></SvgIcon>}
@@ -259,7 +265,8 @@ export const TransactionTable = (props) => {
   const handleRowModesModelChange = (newRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
-  
+
+
   const columns = [
     { field: 'date', headerName: 'DATE', width: 150, editable: true  },
     { field: 'merchant',headerName: 'MERCHANT',width: 200, editable: true  },
@@ -277,11 +284,13 @@ export const TransactionTable = (props) => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem
+              key="11001"
               icon={<SaveIcon />}
               label="Save"
               onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
+              key="11002"
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
@@ -293,6 +302,7 @@ export const TransactionTable = (props) => {
 
         return [
           <GridActionsCellItem
+            key="11003"
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
@@ -300,6 +310,7 @@ export const TransactionTable = (props) => {
             color="inherit"
           />,
           <GridActionsCellItem
+            key="11004"
             icon={<DeleteIcon />}
             label="Delete"
             onClick={handleDeleteClick(id)}

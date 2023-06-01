@@ -42,42 +42,43 @@ const { open, handleClose, handleSendUpdate, theCategory, isNew, handleDelete } 
   };
 
   return (
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{theCategory.category}</DialogTitle>
-        <DialogContent>
-          { (isNew) && <DialogContentText component="span">
-            <TextField
+      <Dialog
+        open={open}
+        onClose={handleClose}>
+          <DialogTitle>{theCategory.category}</DialogTitle>
+          <DialogContent>
+            { (isNew) && <DialogContentText component="span">
+              <TextField
+                margin="normal"
+                id="category_input_text"
+                defaultValue={theCategory.category}
+                type="text"
+                fullWidth
+                variant="filled"
+                size='small'
+                sx={{width: 500}}
+                onChange={handleCategoryNameChange}
+              />
+            </DialogContentText> }
+            <DialogContentText  component="span">
+             <TextField
+              autoFocus
               margin="normal"
-              id="category_input_text"
-              defaultValue={theCategory.category}
+              id="words_input_text"
+              defaultValue={words}
               type="text"
               fullWidth
               variant="filled"
-              size='small'
+              size='medium'
               sx={{width: 500}}
-              onChange={handleCategoryNameChange}
+              onChange={handleWordsChange}
+              InputProps={{
+                inputProps: {
+                  style: { textAlign: "right" },
+                }
+              }}
             />
-          </DialogContentText> }
-          <DialogContentText  component="span">
-           <TextField
-            autoFocus
-            margin="normal"
-            id="words_input_text"
-            defaultValue={words}
-            type="text"
-            fullWidth
-            variant="filled"
-            size='medium'
-            sx={{width: 500}}
-            onChange={handleWordsChange}
-            InputProps={{
-              inputProps: {
-                style: { textAlign: "right" },
-              }
-            }}
-          />
-          </DialogContentText>
-
+            </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -171,7 +172,9 @@ export const Categories = (props) => {
                 primaryTypographyProps={{ variant: 'subtitle2' }}
                 secondary="subtotal: 25"
               />
-              <IconButton edge="end" onClick={() => handleClickOpen(event, category, false)}>
+              <IconButton
+                edge="end"
+                onClick={() => handleClickOpen(event, category, false)}>
                 <SvgIcon>
                   <EllipsisVerticalIcon />
                 </SvgIcon>
