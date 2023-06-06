@@ -12,7 +12,7 @@ import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 import { useState, useEffect } from 'react';
 import { useAuth } from 'src/hooks/use-auth';
-
+import { Auth } from 'aws-amplify';
 
 const now = new Date();
 
@@ -53,26 +53,20 @@ const Page = () => {
 
   function getTransactionList() {
     const jwtToken = auth.user.session_token;
-    const the_token = jwtToken.idToken.jwtToken
-    console.log(the_token);
+    //const the_token = jwtToken.idToken.jwtToken
+    //console.log(the_token);
     fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
     {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: 'Bearer ${jwtToken}',
       },
-    })
-    .then(response => {
-                      console.log(response);
-                      response.json();
-                      }
-          )
-    .then(data => {
-                    setTransactions(data);
-                    console.log(data);
-                  }
-         )
-    .catch(error => console.error(error));
+    }).then(response => response.json())
+      .then(data => {
+                      setTransactions(data);
+                      console.log(data);
+                    }
+           )
+      .catch(error => console.error(error));
   }
 
   function getCategoryList() {
