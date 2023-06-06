@@ -11,6 +11,8 @@ export const AccountPopover = (props) => {
 
   const handleSignOut = useCallback(
     () => {
+      console.log(auth.user);
+      alert("signout");
       onClose?.();
       auth.signOut();
       router.push('/auth/login');
@@ -42,7 +44,7 @@ export const AccountPopover = (props) => {
           color="text.secondary"
           variant="body2"
         >
-          Anika Visser
+          {auth.user.email}
         </Typography>
       </Box>
       <Divider />

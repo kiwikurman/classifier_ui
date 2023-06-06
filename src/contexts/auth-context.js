@@ -1,5 +1,8 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Amplify, Auth } from 'aws-amplify';
+import awsconfig from 'src/aws-exports';
+Amplify.configure(awsconfig);
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -127,35 +130,64 @@ export const AuthProvider = (props) => {
     });
   };
 
+
+
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
-
     try {
+      const user = await Auth.signIn(email, password);
+      console.log(user);
+
+      const signed_in_user = {
+        id: user.username,
+        avatar: '/assets/avatars/avatar-anika-visser.png',
+        name: user.attributes.email,
+        email: user.attributes.email
+      };
+
+      dispatch({
+        type: HANDLERS.SIGN_IN,
+        payload: signed_in_user
+      });
+
       window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
+
+    } catch (error) {
+      console.log('error signing in', error);
+      alert("signin error");
+      return;
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
 
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
   };
 
   const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+    try {
+      console.log(email,name,password);
+      const { user } = await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+        },
+        autoSignIn: { // optional - enables auto sign in after user is confirmed
+          enabled: true,
+        }
+      });
+      console.log(user);
+    } catch (error) {
+      alert(3);
+      console.log('error signing up:', error);
+    }
   };
 
-  const signOut = () => {
+  const signOut = async () => {
+    try {
+      await Auth.signOut({ global: true });
+      alert("signout v");
+    } catch (error) {
+      console.log('error signing out: ', error);
+      alert("signout error");
+  }
     dispatch({
       type: HANDLERS.SIGN_OUT
     });
