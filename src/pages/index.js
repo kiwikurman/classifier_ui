@@ -64,7 +64,6 @@ const Page = () => {
     })
     .then(response => {
                       console.log(response);
-                      alert("ttttt");
                       response.json();
                       }
           )
