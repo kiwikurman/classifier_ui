@@ -28,8 +28,6 @@ yarn-debug.log*
 yarn-error.log*
 
 my_push
-package-lock.json
-package.json
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
