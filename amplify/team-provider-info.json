@@ -1,4 +1,22 @@
 {
+  "main": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-classifierui-main-74405-authRole",
+      "UnauthRoleArn": "arn:aws:iam::601547125890:role/amplify-classifierui-main-74405-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::601547125890:role/amplify-classifierui-main-74405-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-classifierui-main-74405-deployment",
+      "UnauthRoleName": "amplify-classifierui-main-74405-unauthRole",
+      "StackName": "amplify-classifierui-main-74405",
+      "StackId": "arn:aws:cloudformation:eu-central-1:601547125890:stack/amplify-classifierui-main-74405/142a4ad0-0507-11ee-8dfa-02b5d26f37ae",
+      "AmplifyAppId": "d19hnyoax4i1rp"
+    },
+    "categories": {
+      "auth": {
+        "smartcard": {}
+      }
+    }
+  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-amplify2f69b3ab43ff4-staging-80631-authRole",
