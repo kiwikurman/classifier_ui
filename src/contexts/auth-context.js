@@ -136,6 +136,7 @@ export const AuthProvider = (props) => {
     try {
       const user = await Auth.signIn(email, password);
       console.log(user);
+      alert("hi");
       const signed_in_user = {
         id: user.username,
         avatar: '/assets/avatars/avatar-anika-visser.png',
@@ -183,7 +184,6 @@ export const AuthProvider = (props) => {
   const signOut = async () => {
     try {
       await Auth.signOut({ global: true });
-      alert("signout v");
     } catch (error) {
       console.log('error signing out: ', error);
       alert("signout error");

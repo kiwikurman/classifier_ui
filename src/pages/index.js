@@ -52,13 +52,18 @@ const Page = () => {
 
 
   function getTransactionList() {
-    const jwtToken = auth.user.session_token;
+    const jwtToken = auth.user.session_token.accessToken.jwtToken;
+    const idToken = auth.user.session_token.idToken.jwtToken;
+
+
     //const the_token = jwtToken.idToken.jwtToken
-    //console.log(the_token);
+    console.log(auth.user);
+    alert("hi");
     fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
     {
       headers: {
-        Authorization: 'Bearer ${jwtToken}',
+        Authorization: `Bearer ${jwtToken}`,
+        idToken: `Bearer ${idToken}`,
       },
     }).then(response => response.json())
       .then(data => {
