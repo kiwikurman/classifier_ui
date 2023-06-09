@@ -136,7 +136,6 @@ export const AuthProvider = (props) => {
     try {
       const user = await Auth.signIn(email, password);
       console.log(user);
-      alert("hi");
       const signed_in_user = {
         id: user.username,
         avatar: '/assets/avatars/avatar-anika-visser.png',

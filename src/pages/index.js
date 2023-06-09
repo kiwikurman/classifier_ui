@@ -58,7 +58,6 @@ const Page = () => {
 
     //const the_token = jwtToken.idToken.jwtToken
     console.log(auth.user);
-    alert("hi");
     fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
     {
       headers: {
@@ -75,8 +74,15 @@ const Page = () => {
   }
 
   function getCategoryList() {
-    fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/bows')
-      .then(response => response.json())
+    const jwtToken = auth.user.session_token.accessToken.jwtToken;
+    const idToken = auth.user.session_token.idToken.jwtToken;
+
+    fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/bows',{
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        idToken: `Bearer ${idToken}`,
+      },
+    }).then(response => response.json())
       .then(data => {
                       setCategories(data);
                       console.log(data);
