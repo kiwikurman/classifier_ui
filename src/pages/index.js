@@ -25,23 +25,20 @@ const Page = () => {
         "transactions": [
           {
             id: 'ddc0a50f0c764e02a8d9a05a59ca1611',
-            amount: 100,
-            merchant: 'ארומה',
+            amount: 0,
+            merchant: 'חיובים יופיעו כאן',
             createdAt: 1555016400000,
-            full_text_classification: 'Coffee'
+            full_text_classification: 'הקסם קורה אחרי שמגדירים קטגוריה'
           },
           {
             id: '22f4566ab8d24685a5466b1a3ec1fda7',
-            amount: 200,
-            merchant: 'לנדוור',
+            amount: 0,
+            merchant: 'העלה קובץ חיובים כדי להתחיל',
             createdAt: 1555016400000,
-            full_text_classification: 'Restaurants'
+            full_text_classification: 'הגדר קטגויות כדי להתחיל'
           }
         ],
-        "summary": [
-          {"category": "Coffee", "subtotal": 100},
-          {"category": "Restaurants", "subtotal": 200}
-        ],
+        "summary": [],
         "bows": [
           {"category": "groceries", "words": ["סופר פארם", "רמי לוי", "אפייה", "אפיה", "אייזיקס"]},
           {"category": "restaurants", "words": ["פלאפל", "שווארמה", "מיסעדה", "סושי", "מסעדה"]},
@@ -64,7 +61,11 @@ const Page = () => {
       },
     }).then(response => response.json())
       .then(data => {
-                      setTransactions(data);
+                      if ("transactions" in data) {
+                        setTransactions(data);
+                        console.log("setting transactions from server");
+                      }
+                      console.log("didn't get transactions from server");
                       console.log(data);
                     }
            )
@@ -82,12 +83,25 @@ const Page = () => {
       },
     }).then(response => response.json())
       .then(data => {
-                      setCategories(data);
+                      if (Array.isArray(data)) {
+                        setCategories(data);
+                        console.log("setting categories i got from server");
+                      }
+                      console.log("didn't get categories from server. got this instead: ");
                       console.log(data);
                     }
            )
       .catch(error => console.error(error));
   }
+
+  useEffect(() => {
+    getTransactionList();
+    getCategoryList();
+      // Cleanup function (optional)
+    return () => {
+      // Perform any necessary cleanup here
+    };
+  }, []);
 
   return (
     <>

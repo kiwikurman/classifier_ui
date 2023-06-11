@@ -290,8 +290,8 @@ export const TransactionTable = (props) => {
   const columns = [
     { field: 'date', headerName: 'DATE', width: 150, editable: true  },
     { field: 'merchant',headerName: 'MERCHANT',width: 200, editable: true  },
-    { field: 'amount', headerName: 'AMOUNT', width: 200, editable: true  },
-    { field: 'full_text_classification', headerName: 'CLASSIFICATION',width: 200, editable: true },
+    { field: 'amount', headerName: 'AMOUNT', width: 150, editable: true  },
+    { field: 'full_text_classification', headerName: 'CLASSIFICATION',width: 250, editable: true },
     {
       field: 'actions',
       type: 'actions',

@@ -111,6 +111,10 @@ export const ChartCategorySpending = (props) => {
 
   const chartOptions = useChartOptions(theCategories);
   console.log(theSeries);
+  let theTitle = "Category Spending";
+  if (theSeries.length == 0) {
+    theTitle = theTitle + " - UPLOAD a file to begin!"
+  }
   return (
     <Card sx={sx}>
       <CardHeader
@@ -127,7 +131,7 @@ export const ChartCategorySpending = (props) => {
             Sync
           </Button>
         )}
-        title="Category Spending"
+        title={theTitle}
       />
       <CardContent>
         <Chart
