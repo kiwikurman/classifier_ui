@@ -55,8 +55,6 @@ const Page = () => {
     const jwtToken = auth.user.session_token.accessToken.jwtToken;
     const idToken = auth.user.session_token.idToken.jwtToken;
 
-
-    //const the_token = jwtToken.idToken.jwtToken
     console.log(auth.user);
     fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
     {

@@ -37,7 +37,8 @@ import {
   GridToolbarContainer,
   GridActionsCellItem,
 } from '@mui/x-data-grid';
-
+import { useAuth } from 'src/hooks/use-auth';
+import { Auth } from 'aws-amplify';
 
 
 const now = new Date();
@@ -61,6 +62,8 @@ function FileUploadButton(props) {
     fileInputRef.current.click();
   };
 
+  const auth = useAuth();
+
   const handleFileUpload = (the_file) => {
     if (the_file) {
       console.log(the_file);
@@ -68,12 +71,18 @@ function FileUploadButton(props) {
       const formData = new FormData();
       formData.append('file', fileData, the_file.name);
 
+      const jwtToken = auth.user.session_token.accessToken.jwtToken;
+      const idToken = auth.user.session_token.idToken.jwtToken;
+
+      console.log(auth.user);
       fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/input_files',
       {
         method: 'POST',
         body: formData,
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${jwtToken}`,
+          idToken: `Bearer ${idToken}`,
         }
       })
       .then(response => {
@@ -127,18 +136,23 @@ function EditToolbar(props) {
     }));
   };
 
+  const auth = useAuth();
 
 
   const post_action = async (action) => {
-  fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/' + action,
-  {
-    method: 'POST',
-    mode: "no-cors",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: "",
-  }).then(response => {
+      const jwtToken = auth.user.session_token.accessToken.jwtToken;
+      const idToken = auth.user.session_token.idToken.jwtToken;
+
+      fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/' + action,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+          idToken: `Bearer ${idToken}`,
+        },
+        body: "",
+      }).then(response => {
         if (response.ok) {
           // Handle the response from the server
           // e.g., display success message
@@ -199,13 +213,19 @@ export const TransactionTable = (props) => {
   const { transactions = {}, sx, getDataClick, setTransactions, getCategories} = props;
   const [rowModesModel, setRowModesModel] = React.useState({});
 
+  const auth = useAuth();
+
   const handleSendList = async (transactionList) => {
+    const jwtToken = auth.user.session_token.accessToken.jwtToken;
+    const idToken = auth.user.session_token.idToken.jwtToken;
+
     const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/transactions',
     {
       method: 'POST',
-      mode: "no-cors",
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+        idToken: `Bearer ${idToken}`,
       },
       body: JSON.stringify({ transactionList }),
     });

@@ -28,7 +28,8 @@ yarn-debug.log*
 yarn-error.log*
 
 my_push
-
+fresh_authz_jwt.py
+fresh_id_jwt.py
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*

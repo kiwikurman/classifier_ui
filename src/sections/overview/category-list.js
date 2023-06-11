@@ -25,7 +25,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CategorySharpIcon from '@mui/icons-material/CategorySharp';
-
+import { useAuth } from 'src/hooks/use-auth';
+import { Auth } from 'aws-amplify';
 
 function FormDialog(props) {
 const { open, handleClose, handleSendUpdate, theCategory, isNew, handleDelete } = props;
@@ -105,6 +106,8 @@ export const Categories = (props) => {
     setOpen(false);
   };
 
+  const auth = useAuth();
+
   const handleSendUpdate = async (category, updatedText, updatedCategoryName) => {
     setOpen(false);
     let words_list = updatedText.split(",");
@@ -118,12 +121,16 @@ export const Categories = (props) => {
       "words": words_list,
     };
 
+    const jwtToken = auth.user.session_token.accessToken.jwtToken;
+    const idToken = auth.user.session_token.idToken.jwtToken;
+
     const response = await fetch('https://g1y4r7q6t5.execute-api.eu-central-1.amazonaws.com/classifier/bows',
     {
       method: 'POST',
-      mode: "no-cors",
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+        idToken: `Bearer ${idToken}`
       },
       body: JSON.stringify({ newCategory }),
     });
